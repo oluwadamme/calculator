@@ -1,8 +1,10 @@
+import 'dart:math';
 import 'package:calculator/controller/theme_controller.dart';
 import 'package:calculator/utils/app_colors.dart';
 import 'package:calculator/utils/theme_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class CalculatorPage extends StatefulWidget {
   const CalculatorPage({super.key});
@@ -13,74 +15,15 @@ class CalculatorPage extends StatefulWidget {
 
 class _CalculatorPageState extends State<CalculatorPage> {
   final TextEditingController _textController = TextEditingController();
-  double _result = 0;
-  double num2 = 0;
-  double num1 = 0;
-  String _operation = '';
-  void _performOperation(String operation, [bool evaluate = false]) {
-    if (evaluate) {
-      switch (_operation) {
-        case '+':
-          setState(() {
-            _result = num2 + num1;
-            _operation = '';
-          });
+  String _result = "0";
+  void _performOperation() {
+    Parser p = Parser();
+    Expression exp = p.parse(_textController.text.replaceAll("÷", "/").replaceAll("×", "*"));
+    final result = exp.evaluate(EvaluationType.REAL, ContextModel());
 
-          break;
-        case '-':
-          setState(() {
-            _result = num2 - num1;
-            _operation = '';
-          });
-
-          break;
-        case "×":
-          setState(() {
-            _result = num2 * num1;
-            _operation = '';
-          });
-
-          break;
-        case "÷":
-          if (num1 != 0) {
-            setState(() {
-              _result = num2 / num1;
-              _operation = '';
-            });
-          } else {
-            setState(() {
-              _result = 0;
-              _operation = '';
-            });
-          }
-          break;
-        case '%':
-          setState(() {
-            _result = num2 % num1;
-            _operation = '';
-          });
-          break;
-        default:
-          setState(() {
-            _result = 0;
-            _operation = '';
-          });
-      }
-      return;
-    }
     setState(() {
-      _operation = operation;
+      _result = result.toString();
     });
-
-    if (_operation.isNotEmpty) {
-      num2 = double.parse(_textController.text);
-      return;
-    }
-    if (_textController.text.isNotEmpty) {
-      setState(() {
-        num1 = double.parse(_textController.text);
-      });
-    }
   }
 
   @override
@@ -164,26 +107,28 @@ class _CalculatorPageState extends State<CalculatorPage> {
                         onPressed: (value) {
                           setState(() {
                             _textController.text = '';
-                            _result = 0;
+                            _result = "0";
                           });
                         },
                       ),
                       PadWidget(
                         label: "+/-",
-                        onPressed: (value) {
-                          _performOperation(value);
-                        },
+                        onPressed: (value) {},
                       ),
                       PadWidget(
                         label: "%",
                         onPressed: (value) {
-                          _performOperation(value);
+                          setState(() {
+                            _textController.text += value;
+                          });
                         },
                       ),
                       PadWidget(
                         label: "÷",
                         onPressed: (value) {
-                          _performOperation(value);
+                          setState(() {
+                            _textController.text += value;
+                          });
                         },
                       ),
                     ],
@@ -218,7 +163,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
                       PadWidget(
                         label: "×",
                         onPressed: (value) {
-                          _performOperation(value);
+                          setState(() {
+                            _textController.text += value;
+                          });
                         },
                       ),
                     ],
@@ -253,7 +200,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
                       PadWidget(
                         label: "-",
                         onPressed: (value) {
-                          _performOperation(value);
+                          setState(() {
+                            _textController.text += value;
+                          });
                         },
                       ),
                     ],
@@ -288,7 +237,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
                       PadWidget(
                         label: "+",
                         onPressed: (value) {
-                          _performOperation(value);
+                          setState(() {
+                            _textController.text += value;
+                          });
                         },
                       ),
                     ],
@@ -312,18 +263,23 @@ class _CalculatorPageState extends State<CalculatorPage> {
                           });
                         },
                       ),
+                      const SizedBox(width: 10),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          setState(() {
+                            _textController.text = _textController.text.substring(0, _textController.text.length - 1);
+                          });
+                        },
                         child: const SizedBox(
                           height: 40,
                           width: 40,
                           child: Icon(Icons.backspace_outlined),
                         ),
                       ),
-                      const SizedBox(width: 30),
+                      const SizedBox(width: 20),
                       GestureDetector(
                         onTap: () {
-                          _performOperation("=", true);
+                          _performOperation();
                         },
                         child: Container(
                           height: 40,
