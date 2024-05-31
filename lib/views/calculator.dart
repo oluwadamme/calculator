@@ -44,36 +44,40 @@ class _CalculatorPageState extends State<CalculatorPage> {
                   end: Alignment.bottomCenter,
                 ),
         ),
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
-            GestureDetector(
-              onTap: () {
-                if (theme.brightness == Brightness.light) {
-                  ThemeNotifier.changeTheme(ThemeConfig.darkTheme);
-                } else {
-                  ThemeNotifier.changeTheme(ThemeConfig.lightTheme);
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                decoration:
-                    BoxDecoration(color: theme.colorScheme.inversePrimary, borderRadius: BorderRadius.circular(32)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (theme.brightness == Brightness.light) const Icon(Icons.light_mode),
-                    if (theme.brightness == Brightness.light) const SizedBox(width: 10),
-                    const CircleAvatar(
-                      backgroundColor: AppColors.grey9F,
-                      radius: 10,
-                    ),
-                    if (theme.brightness == Brightness.dark) const SizedBox(width: 10),
-                    if (theme.brightness == Brightness.dark) const Icon(Icons.dark_mode),
-                  ],
+            const SizedBox(height: 20),
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  if (theme.brightness == Brightness.light) {
+                    ThemeNotifier.changeTheme(ThemeConfig.darkTheme);
+                  } else {
+                    ThemeNotifier.changeTheme(ThemeConfig.lightTheme);
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                  decoration:
+                      BoxDecoration(color: theme.colorScheme.inversePrimary, borderRadius: BorderRadius.circular(32)),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (theme.brightness == Brightness.light) const Icon(Icons.light_mode),
+                      if (theme.brightness == Brightness.light) const SizedBox(width: 10),
+                      const CircleAvatar(
+                        backgroundColor: AppColors.grey9F,
+                        radius: 10,
+                      ),
+                      if (theme.brightness == Brightness.dark) const SizedBox(width: 10),
+                      if (theme.brightness == Brightness.dark) const Icon(Icons.dark_mode),
+                    ],
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: TextFormField(
@@ -84,14 +88,20 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 decoration: const InputDecoration.collapsed(hintText: "0"),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: Text(
-                textAlign: TextAlign.right,
-                _result.toString(),
-                style: theme.textTheme.labelLarge,
-                //   decoration: const InputDecoration.collapsed(hintText: "0"),
-              ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Text(
+                    textAlign: TextAlign.right,
+                    _result.toString(),
+                    style: theme.textTheme.labelLarge,
+                    //   decoration: const InputDecoration.collapsed(hintText: "0"),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             const Divider(color: AppColors.grey9F),

@@ -23,7 +23,7 @@ class ThemeConfig {
     iconTheme: const IconThemeData(color: AppColors.white),
     textTheme: const TextTheme(
       labelMedium: TextStyle(fontSize: 24, color: AppColors.grey9F),
-      labelLarge: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.w500),
+      labelLarge: TextStyle(fontSize: 36, color: Colors.white, fontWeight: FontWeight.w500),
       bodyLarge: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.w500),
     ),
   );
