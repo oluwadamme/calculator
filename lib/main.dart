@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       valueListenable: ThemeNotifier.themeData,
       builder: (context, value, child) {
         return MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Calculator Demo',
           theme: value,
           home: const CalculatorPage(),
         );
